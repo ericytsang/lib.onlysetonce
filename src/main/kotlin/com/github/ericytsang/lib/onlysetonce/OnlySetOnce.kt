@@ -21,8 +21,13 @@ class OnlySetOnce<in R,T:Any?>:ReadWriteProperty<R,T?>
         require(value != null)
         mutex.withLock()
         {
-            require(field == null)
+            if (field != null)
+            {
+                throw Exception("field has already been set")
+            }
             field = value
         }
     }
+
+    class Exception(reason:String):RuntimeException(reason)
 }
